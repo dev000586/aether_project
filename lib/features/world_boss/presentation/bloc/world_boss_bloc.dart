@@ -11,7 +11,7 @@ import 'world_boss_state.dart';
 /// Manages the high-frequency world boss countdown (100ms ticks).
 ///
 /// KEY CONCURRENCY DECISION:
-/// The timer runs as a periodic Stream<Duration> rather than direct
+/// The timer runs as a periodic Stream of Duration rather than direct
 /// setState calls. This decouples tick production from UI consumption.
 /// BlocSelector in the UI further isolates which sub-tree actually rebuilds —
 /// only the countdown text widget re-renders every 100ms, not the whole page.
