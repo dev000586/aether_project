@@ -1,0 +1,45 @@
+name: aether_project
+description: Project Aether — A production-grade Flutter MMO world event system.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_bloc: ^8.1.3
+  equatable: ^2.0.5
+
+  # Firebase
+  firebase_core: ^2.24.2
+  cloud_firestore: ^4.13.6
+
+  # Dependency Injection
+  get_it: ^7.6.4
+
+  # Functional Programming / Error Handling
+  dartz: ^0.10.1
+
+  # Utilities
+  intl: ^0.18.1
+  uuid: ^4.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Testing
+  bloc_test: ^9.1.5
+  mocktail: ^1.0.1
+  fake_cloud_firestore: ^2.4.9
+
+  # Linting
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true

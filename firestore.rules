@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Events (World Boss / Raid) ──────────────────────────────────────────
+    match /events/{eventId} {
+      // Anyone authenticated can read event state (boss timer, slot count).
+      allow read: if request.auth != null;
+
+      // Only Cloud Functions (admin SDK) can update event documents directly.
+      // Client-side joins go through transactions — not direct writes.
+      allow write: if false;
+
+      // ── Raid Participants ─────────────────────────────────────────────────
+      match /participants/{userId} {
+        // Users can read participant list.
+        allow read: if request.auth != null;
+
+        // Users can only write their own participant document,
+        // and only via the transaction path (enforced in RaidService).
+        allow create: if request.auth != null
+          && request.auth.uid == userId
+          && request.resource.data.keys().hasOnly(['userId', 'joined_at']);
+
+        // No updates or deletes from clients.
+        allow update, delete: if false;
+      }
+
+      // ── Chat Messages ─────────────────────────────────────────────────────
+      match /messages/{messageId} {
+        // Authenticated users can read paginated messages.
+        allow read: if request.auth != null;
+
+        // Authenticated users can create messages with valid fields only.
+        allow create: if request.auth != null
+          && request.resource.data.keys().hasOnly(
+               ['userId', 'displayName', 'message', 'timestamp']
+             )
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.message is string
+          && request.resource.data.message.size() > 0
+          && request.resource.data.message.size() <= 500;
+
+        // No client-side edits or deletes (Cloud Functions handle TTL cleanup).
+        allow update, delete: if false;
+      }
+    }
+  }
+}
