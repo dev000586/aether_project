@@ -41,11 +41,7 @@ Future<void> main() async {
     // Connect Firestore to the local emulator.
     // Use 10.0.2.2 on Android emulator (it maps to host 127.0.0.1).
     // Use 127.0.0.1 on iOS simulator and physical devices on the same LAN.
-    if(Platform.isAndroid){
-      FirebaseFirestore.instance.useFirestoreEmulator('10.0.2.2', 8080);
-    }else{
-      FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8080);
-    }
+      FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
   }else{
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
